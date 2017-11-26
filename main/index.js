@@ -13,7 +13,8 @@ app.on('ready', async () => {
 
   const mainWindow = new BrowserWindow({
     width: 800,
-    height: 600
+    height: 600,
+    titleBarStyle: 'hidden',
   })
 
   const devPath = 'http://localhost:8000/start'
@@ -21,7 +22,7 @@ app.on('ready', async () => {
   const prodPath = format({
     pathname: resolve('renderer/out/start/index.html'),
     protocol: 'file:',
-    slashes: true
+    slashes: true,
   })
 
   const url = isDev ? devPath : prodPath
