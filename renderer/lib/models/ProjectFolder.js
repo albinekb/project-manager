@@ -12,7 +12,7 @@ export default class ProjectFolder {
   @observable path = null
   @observable error = null
   @observable type = null
-
+  @observable hasPackageJson = null
   constructor(store, { path } = {}) {
     this.store = store
     if (!path) throw new Error('Missing path')
@@ -27,9 +27,25 @@ export default class ProjectFolder {
     return 'LOADED'
   }
 
+  async syncFs() {
+    const dir = await fs.readdir(this.path)
+    console.log('dir', dir)
+    this.hasPackageJson = dir.includes('package.json')
+    if (this.hasPackageJson) {
+      this.type = 'npm'
+    }
+    if (dir.includes('yarn.lock')) {
+      this.type = 'yarn'
+    }
+    if (dir.includes('index.html')) {
+      this.type = 'html'
+    }
+  }
+
   async init() {
     if (!await isFolder(this.path)) {
       this.error = `${this.path} is not a folder`
     }
+    await this.syncFs()
   }
 }

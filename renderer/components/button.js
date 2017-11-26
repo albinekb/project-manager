@@ -19,6 +19,12 @@ export default ({ children, variant, ...props }) => (
         background: linear-gradient(#70f570, #49c628);
         color: white;
       }
+      button:hover {
+        opacity: 0.6;
+      }
+      button:active {
+        opacity: 1;
+      }
     `}</style>
   </div>
 )

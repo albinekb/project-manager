@@ -3,14 +3,23 @@ import PropTypes from 'prop-types'
 import { observer } from 'mobx-react'
 import Button from './button'
 
-const ProjectCell = ({ project }) => {
-  const { id, path, status } = project
+const ProjectCell = observer(({ onClick, project }) => {
+  const { id, path, status, type } = project
   return (
     <div className="root">
       <h3>{path}</h3>
       <div>
         <span className="status">{status}</span>
-        <Button onClick={() => project.remove()}>remove</Button>
+        <span className="type">{type}</span>
+        <Button onClick={onClick}>open</Button>
+        <Button
+          onClick={event => {
+            event.stopPropagation()
+            project.remove()
+          }}
+        >
+          remove
+        </Button>
       </div>
       <style jsx>{`
         h3 {
@@ -34,19 +43,23 @@ const ProjectCell = ({ project }) => {
       `}</style>
     </div>
   )
-}
+})
+
 @observer
 export default class Projects extends React.Component {
   static propTypes = {
     store: PropTypes.object.isRequired,
   }
   render() {
-    const { store } = this.props
-    console.log('store.projects', store.projects)
+    const { store, onProjectOpen } = this.props
     return (
       <div>
         {store.projects.map(project => (
-          <ProjectCell project={project} key={project.id} />
+          <ProjectCell
+            onClick={() => onProjectOpen(project.id)}
+            project={project}
+            key={project.id}
+          />
         ))}
       </div>
     )

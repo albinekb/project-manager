@@ -16,6 +16,16 @@ export default class Project {
 
     return null
   }
+
+  @computed
+  get type() {
+    if (this.folder) {
+      return this.folder.type
+    }
+
+    return null
+  }
+
   @computed
   get status() {
     if (this.folder) {

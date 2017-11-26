@@ -50,6 +50,10 @@ export class ProjectStore {
     // this.isLoading = false
   }
 
+  getProjectById(id) {
+    return this.projects.find(project => project.id === id)
+  }
+
   /**
    * Creates a fresh todo on the client and server
    */
@@ -63,7 +67,6 @@ export class ProjectStore {
     this.storeProjects()
     return project
   }
-
   removeNotification(notification) {
     this.notifications.splice(this.notifications.indexOf(notification), 1)
     notification.dispose()

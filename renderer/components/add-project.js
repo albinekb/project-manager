@@ -12,16 +12,17 @@ const isFolder = async path => {
 
 export default class FolderPicker extends React.Component {
   onClick = async () => {
+    const { store } = this.props
     const picked = require('electron').remote.dialog.showOpenDialog({
-      properties: ['openDirectory'],
+      properties: ['openDirectory', 'multiSelections'],
     })
 
-    if (picked.length !== 1) {
-      throw new Error('Only one directory')
+    if (picked.length === 0) {
+      throw new Error('No file picked?')
     }
-    const [path] = picked
-    const { store } = this.props
-    store.createProject({ path })
+    for (const pick of picked) {
+      store.createProject({ path: pick })
+    }
   }
 
   render() {
